@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-blue-600 text-white p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Auth App Dashboard</h1>
+        <div>
+            <a href="/" class="px-4 hover:underline">Home</a>
+            <a href="/logout" class="px-4 hover:underline">Logout</a>
+        </div>
+    </nav>
+
+    <main class="flex justify-center mt-10">
+        <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-2xl text-center">
+            <h2 class="text-2xl font-semibold mb-4">🎉 Welcome <%= user.email %>
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <button onclick="toggleSection('profile')" class="p-4 bg-blue-100 rounded-md w-full">🧾 View
+                    Profile</button>
+                <button onclick="toggleSection('password')" class="p-4 bg-green-100 rounded-md w-full">🔒 Change
+                    Password</button>
+                <button onclick="toggleSection('email')" class="p-4 bg-yellow-100 rounded-md w-full">📧 Manage
+                    Emails</button>
+                <button onclick="toggleSection('delete')" class="p-4 bg-red-100 rounded-md w-full">❌ Delete
+                    Account</button>
+            </div>
+
+            <div id="profile" class="hidden text-left">
+                <h3 class="text-lg font-bold mb-2">Your Profile</h3>
+                <p><strong>Email:</strong>
+                    <%= user.email %>
+                </p>
+                <p><strong>Username:</strong>
+                    <%= user.username || "N/A" %>
+                </p>
+                <p><strong>Age:</strong>
+                    <%= user.age || "N/A" %>
+                </p>
+            </div>
+
+            <div id="password" class="hidden text-left">
+                <h3 class="text-lg font-bold mb-2">Change Password</h3>
+                <form action="/update-password" method="POST" class="space-y-2">
+                    <input type="password" name="newPassword" placeholder="New Password" required
+                        class="w-full border p-2 rounded">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update</button>
+                </form>
+            </div>
+
+            <div id="email" class="hidden text-left">
+                <h3 class="text-lg font-bold mb-2">Update Email</h3>
+                <form action="/update-email" method="POST" class="space-y-2">
+                    <input type="email" name="newEmail" placeholder="New Email" required
+                        class="w-full border p-2 rounded">
+                    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
+                </form>
+            </div>
+
+            <div id="delete" class="hidden text-left">
+                <h3 class="text-lg font-bold mb-2">Delete Account</h3>
+                <form action="/delete-account" method="POST"
+                    onsubmit="return confirm('Are you sure? This cannot be undone.')">
+                    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Confirm Delete</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSection(id) {
+            ['profile', 'password', 'email', 'delete'].forEach(sec => {
+                document.getElementById(sec).classList.add("hidden");
+            });
+            document.getElementById(id).classList.remove("hidden");
+        }
+    </script>
+</body>
+
+</html>
